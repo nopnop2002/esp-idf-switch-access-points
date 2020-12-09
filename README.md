@@ -1,2 +1,34 @@
 # esp-idf-switch-access-points
-Switching access points for esp-idf
+Switching access points for esp-idf.
+
+Station mode of esp-idf cannot connect to multiple access points at the same time.   
+However, it is possible to switch access points sequentially:   
+AP1->AP2->AP1->AP2   
+
+This is example code that switches access points sequentially.   
+
+# Software requirements
+esp-idf ver4.1 or later.   
+
+# Install
+
+```
+git clone https://github.com/nopnop2002/esp-idf-switch-access-points
+cd esp-idf-switch-access-points
+make menuconfig
+make flash monitor
+```
+
+# Firmware configuration
+You have to set this config value using menuconfig.   
+
+- CONFIG_ESP_WIFI_SSID1   
+SSID of your wifi AP1.
+- CONFIG_ESP_WIFI_PASSWORD1   
+PASSWORD of your wifi AP1.
+- CONFIG_ESP_WIFI_SSID2   
+SSID of your wifi AP2.
+- CONFIG_ESP_WIFI_PASSWORD2   
+PASSWORD of your wifi AP2.
+- CONFIG_ESP_MAXIMUM_RETRY   
+Maximum number of retries when connecting to wifi.
