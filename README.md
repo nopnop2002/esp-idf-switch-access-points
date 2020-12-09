@@ -35,5 +35,4 @@ Maximum number of retries when connecting to wifi.
 
 ![config-1](https://user-images.githubusercontent.com/6020549/101636668-01bee280-3a6f-11eb-961b-9919e1e0eef0.jpg)
 
-![config-2](https://user-images.githubusercontent.com/6020549/101636664-01264c00-3a6f-11eb-808b-99c95c7933a3.jpg)
-
+![config-2](https://user-images.githubusercontent.com/6020549/101636847-3d59ac80-3a6f-11eb-9324-07919d60ce46.jpg)
