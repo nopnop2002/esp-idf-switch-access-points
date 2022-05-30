@@ -15,8 +15,8 @@ esp-idf ver4.1 or later.
 ```
 git clone https://github.com/nopnop2002/esp-idf-switch-access-points
 cd esp-idf-switch-access-points
-make menuconfig
-make flash monitor
+idf.py menuconfig
+idf.py flash monitor
 ```
 
 # Firmware configuration
