@@ -7,6 +7,8 @@ AP1->AP2->AP1->AP2
 
 This is example code that switches access points sequentially.   
 
+![slide1](https://user-images.githubusercontent.com/6020549/220897489-0b5e4ca3-922c-4685-9685-6bafc91c969f.JPG)
+
 # Software requirements
 esp-idf ver4.1 or later.   
 
