@@ -7,7 +7,7 @@ AP1->AP2->AP1->AP2
 
 This is example code that switches access points sequentially.   
 
-# Software requiment
+# Software requiment   
 ESP-IDF V5.0 or later.   
 ESP-IDF V4.4 release branch reached EOL in July 2024.   
 
