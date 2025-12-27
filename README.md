@@ -7,11 +7,11 @@ AP1->AP2->AP1->AP2
 
 This is example code that switches access points sequentially.   
 
-# Software requirements
-esp-idf ver4.1 or later.   
+# Software requiment
+ESP-IDF V5.0 or later.   
+ESP-IDF V4.4 release branch reached EOL in July 2024.   
 
 # Install
-
 ```
 git clone https://github.com/nopnop2002/esp-idf-switch-access-points
 cd esp-idf-switch-access-points

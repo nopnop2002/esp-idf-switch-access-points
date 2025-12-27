@@ -1,11 +1,13 @@
-/* WiFi station Example
+/*
+	WiFi station Example
 
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
 
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
 */
+
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -23,14 +25,13 @@ static EventGroupHandle_t s_wifi_event_group;
  * - we are connected to the AP with an IP
  * - we failed to connect after the maximum amount of retries */
 #define WIFI_CONNECTED_BIT BIT0
-#define WIFI_FAIL_BIT	   BIT1
+#define WIFI_FAIL_BIT BIT1
 
-static const char *TAG = "wifi station";
+static const char *TAG = "MAIN";
 
 int s_retry_num = 0;
 
-static void event_handler(void* arg, esp_event_base_t event_base,
-								int32_t event_id, void* event_data)
+static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
 	if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
 		esp_wifi_connect();
@@ -71,15 +72,15 @@ esp_err_t wifi_connect_sta(char * ssid, char * password)
 	esp_event_handler_instance_t instance_any_id;
 	esp_event_handler_instance_t instance_got_ip;
 	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
-														ESP_EVENT_ANY_ID,
-														&event_handler,
-														NULL,
-														&instance_any_id));
+		ESP_EVENT_ANY_ID,
+		&event_handler,
+		NULL,
+		&instance_any_id));
 	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT,
-														IP_EVENT_STA_GOT_IP,
-														&event_handler,
-														NULL,
-														&instance_got_ip));
+		IP_EVENT_STA_GOT_IP,
+		&event_handler,
+		NULL,
+		&instance_got_ip));
 
 #if 0
 	wifi_config_t wifi_config = {
@@ -89,7 +90,7 @@ esp_err_t wifi_connect_sta(char * ssid, char * password)
 			/* Setting a password implies station will connect to all security modes including WEP/WPA.
 			 * However these modes are deprecated and not advisable to be used. Incase your Access point
 			 * doesn't support WPA2, these mode can be enabled by commenting below line */
-		 .threshold.authmode = WIFI_AUTH_WPA2_PSK,
+			.threshold.authmode = WIFI_AUTH_WPA2_PSK,
 
 			.pmf_cfg = {
 				.capable = true,
@@ -107,9 +108,9 @@ esp_err_t wifi_connect_sta(char * ssid, char * password)
 	wifi_config.sta.pmf_cfg.capable = true;
 	wifi_config.sta.pmf_cfg.required = false;
 
-	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
-	ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
-	ESP_ERROR_CHECK(esp_wifi_start() );
+	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
+	ESP_ERROR_CHECK(esp_wifi_start());
 	ESP_LOGI(TAG, "wifi_start");
 
 
@@ -117,10 +118,10 @@ esp_err_t wifi_connect_sta(char * ssid, char * password)
 	 * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
 	esp_err_t ret_value = ESP_OK;
 	EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
-			WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
-			pdFALSE,
-			pdFALSE,
-			portMAX_DELAY);
+		WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
+		pdFALSE,
+		pdFALSE,
+		portMAX_DELAY);
 
 	/* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
 	 * happened. */
@@ -150,29 +151,29 @@ void wifi_disconnect_sta(void)
 
 	// Get configuration of specified interface.
 	wifi_config_t wifi_config;
-	ESP_ERROR_CHECK(esp_wifi_get_config(ESP_IF_WIFI_STA, &wifi_config) );
+	ESP_ERROR_CHECK(esp_wifi_get_config(WIFI_IF_STA, &wifi_config));
 
 	esp_event_handler_instance_t instance_any_id;
 	esp_event_handler_instance_t instance_got_ip;
 	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
-														ESP_EVENT_ANY_ID,
-														&event_handler,
-														NULL,
-														&instance_any_id));
+		ESP_EVENT_ANY_ID,
+		&event_handler,
+		NULL,
+		&instance_any_id));
 	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT,
-														IP_EVENT_STA_GOT_IP,
-														&event_handler,
-														NULL,
-														&instance_got_ip));
+		IP_EVENT_STA_GOT_IP,
+		&event_handler,
+		NULL,
+		&instance_got_ip));
 	ESP_ERROR_CHECK(esp_wifi_disconnect());
 
 	/* Waiting until connection failed for the maximum
 	 * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
 	EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
-			WIFI_FAIL_BIT,
-			pdFALSE,
-			pdFALSE,
-			portMAX_DELAY);
+		WIFI_FAIL_BIT,
+		pdFALSE,
+		pdFALSE,
+		portMAX_DELAY);
 
 	/* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
 	 * happened. */
@@ -199,7 +200,7 @@ void wifi_disconnect_sta(void)
 
 void app_main(void)
 {
-	//Initialize NVS
+	// Initialize NVS
 	esp_err_t ret = nvs_flash_init();
 	if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
 	  ESP_ERROR_CHECK(nvs_flash_erase());
@@ -207,7 +208,7 @@ void app_main(void)
 	}
 	ESP_ERROR_CHECK(ret);
 
-	ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
+	// Initialize WiFi
 	wifi_init_sta();
 
 	for(int i=0;i<5;i++) {
@@ -216,6 +217,9 @@ void app_main(void)
 			vTaskDelay(500);
 			wifi_disconnect_sta();
 			vTaskDelay(500);
+		} else {
+			ESP_LOGE(TAG, "Unable to connect to %s", CONFIG_ESP_WIFI_SSID1);
+			while(1) { vTaskDelay(1); }
 		}
 
 		// Connect AP2
@@ -223,6 +227,9 @@ void app_main(void)
 			vTaskDelay(500);
 			wifi_disconnect_sta();
 			vTaskDelay(500);
+		} else {
+			ESP_LOGE(TAG, "Unable to connect to %s", CONFIG_ESP_WIFI_SSID2);
+			while(1) { vTaskDelay(1); }
 		}
 	}
 	ESP_LOGI(TAG, "ALL Done.");
