@@ -208,13 +208,15 @@ void app_main(void)
 	}
 	ESP_ERROR_CHECK(ret);
 
-	// Initialize WiFi
+	// Initialize WiFi (Not started)
 	wifi_init_sta();
 
 	for(int i=0;i<5;i++) {
 		// Connect AP1
+		ESP_LOGW(TAG, "Connecting to %s", CONFIG_ESP_WIFI_SSID1);
 		if (wifi_connect_sta(CONFIG_ESP_WIFI_SSID1, CONFIG_ESP_WIFI_PASSWORD1) == ESP_OK) {
 			vTaskDelay(500);
+			ESP_LOGW(TAG, "Disconnecting from %s", CONFIG_ESP_WIFI_SSID1);
 			wifi_disconnect_sta();
 			vTaskDelay(500);
 		} else {
@@ -223,8 +225,10 @@ void app_main(void)
 		}
 
 		// Connect AP2
+		ESP_LOGW(TAG, "Connecting to %s", CONFIG_ESP_WIFI_SSID2);
 		if (wifi_connect_sta(CONFIG_ESP_WIFI_SSID2, CONFIG_ESP_WIFI_PASSWORD2) == ESP_OK) {
 			vTaskDelay(500);
+			ESP_LOGW(TAG, "Disconnecting from %s", CONFIG_ESP_WIFI_SSID2);
 			wifi_disconnect_sta();
 			vTaskDelay(500);
 		} else {
